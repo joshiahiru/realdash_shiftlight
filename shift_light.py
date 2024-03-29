@@ -3,17 +3,18 @@
 import socket,os
 import struct
 import board
-import neopixel
+import neopixel_spi as neopixel
 import signal
 
 # Configuration
-SHIFTRPM = 9000				# At what RPM doe you need to shift
+SHIFTRPM = 7000				# At what RPM doe you need to shift
 GREEN    = 9				# Nr of green leds
 ORANGE   = 4				# Nr of orange leds
 RED      = 3 				# Nr of red leds
-RANGE    = 0.1				# What part of the rev range does the shift light work on
-SERVER   = ('10.0.70.119', 12345)       # Realdash instance to connect to
+RANGE    = 0.3				# What part of the rev range does the shift light work on
+SERVER   = ('localhost', 12345)       # Realdash instance to connect to
 RPMID    = 37				# RPM id send from Realdash
+
 
 # Global variables
 nrLeds = GREEN + ORANGE + RED
@@ -61,7 +62,7 @@ def setLight(rpm):
 
 # Set everything up
 signalHandler = SignalHandler()
-pixels = neopixel.NeoPixel(board.D18, nrLeds)
+pixels = neopixel.NeoPixel_SPI(board.SPI(), nrLeds)
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
 sock.connect(SERVER)
 
